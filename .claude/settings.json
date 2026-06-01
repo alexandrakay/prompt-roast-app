@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(gh pr create*)",
+            "command": "set -a; source /Users/alexandramyers/Desktop/12_weeks/prompt-roast-app/.env.local; set +a; npx @alexandrakay/pretty-pr 2>/dev/null || true",
+            "statusMessage": "Running pretty-pr..."
+          }
+        ]
+      }
+    ]
+  }
+}
