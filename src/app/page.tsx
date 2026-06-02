@@ -8,7 +8,7 @@ import type { RoastResult } from '@/lib/types';
 export default function Home() {
   const [sessionRoastCount, setSessionRoastCount] = useState(0);
 
-  function handleRoastComplete(_result: RoastResult) {
+  function handleRoastComplete(_result: RoastResult, _roastId: string) {
     setSessionRoastCount((c) => c + 1);
   }
 

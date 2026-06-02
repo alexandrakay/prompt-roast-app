@@ -4,6 +4,7 @@ import RoastForm from '../components/RoastForm';
 
 jest.mock('../app/actions', () => ({
   roastPrompt: jest.fn(),
+  saveRoast: jest.fn().mockResolvedValue('mock-id'),
 }));
 
 describe('RoastForm', () => {

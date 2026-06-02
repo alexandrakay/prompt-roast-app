@@ -1,6 +1,9 @@
 'use server';
 
 import Anthropic from '@anthropic-ai/sdk';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import type { RoastResult } from '@/lib/types';
 
 const SYSTEM_PROMPT = `You are a brutal, snarky prompt critic. Your job is to tear apart bad prompts, charge for every crime, and then hand back a fixed version.
 
@@ -32,6 +35,22 @@ function parseRoastOutput(raw: string) {
     .filter(l => l.startsWith('✗'));
 
   return { roast, charges, fixed };
+}
+
+export async function saveRoast(
+  originalPrompt: string,
+  result: RoastResult,
+  userId: string | null
+): Promise<string> {
+  const ref = await addDoc(collection(db, 'roasts'), {
+    userId,
+    originalPrompt,
+    roast: result.roast,
+    charges: result.charges,
+    fixed: result.fixed,
+    createdAt: serverTimestamp(),
+  });
+  return ref.id;
 }
 
 export async function roastPrompt(prompt: string, sessionRoastCount: number): Promise<ReadableStream> {

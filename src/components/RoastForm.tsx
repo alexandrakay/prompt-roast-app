@@ -2,16 +2,17 @@
 
 import { useState } from 'react';
 import { Box, Button, CircularProgress, TextField } from '@mui/material';
-import { roastPrompt } from '@/app/actions';
+import { roastPrompt, saveRoast } from '@/app/actions';
 import type { RoastResult } from '@/lib/types';
 import RoastResultView from './RoastResult';
 
 export interface RoastFormProps {
   sessionRoastCount: number;
-  onRoastComplete: (result: RoastResult) => void;
+  userId?: string | null;
+  onRoastComplete: (result: RoastResult, roastId: string) => void;
 }
 
-export default function RoastForm({ sessionRoastCount, onRoastComplete }: RoastFormProps) {
+export default function RoastForm({ sessionRoastCount, userId = null, onRoastComplete }: RoastFormProps) {
   const [prompt, setPrompt] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -47,7 +48,9 @@ export default function RoastForm({ sessionRoastCount, onRoastComplete }: RoastF
           try {
             const parsed: RoastResult = JSON.parse(jsonPart);
             setResult(parsed);
-            onRoastComplete(parsed);
+            saveRoast(prompt, parsed, userId ?? null)
+              .then((id) => onRoastComplete(parsed, id))
+              .catch(() => onRoastComplete(parsed, ''));
           } catch {}
         } else {
           raw += chunk;
