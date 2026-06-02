@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { Box, Container, Typography } from '@mui/material';
 import RoastForm from '@/components/RoastForm';
+import { useAuth } from '@/lib/useAuth';
 import type { RoastResult } from '@/lib/types';
 
 export default function Home() {
+  const { user } = useAuth();
   const [sessionRoastCount, setSessionRoastCount] = useState(0);
 
   function handleRoastComplete(_result: RoastResult, _roastId: string) {
