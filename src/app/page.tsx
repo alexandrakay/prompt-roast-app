@@ -8,11 +8,15 @@ import RoastForm from '@/components/RoastForm';
 import { useAuth } from '@/lib/useAuth';
 import type { RoastResult } from '@/lib/types';
 
+const ANON_ROAST_LIMIT = 3;
+
 export default function Home() {
-  const { user } = useAuth();
+  const { user, signIn } = useAuth();
   const [sessionRoastCount, setSessionRoastCount] = useState(0);
   const [lastRoastId, setLastRoastId] = useState<string | null>(null);
   const [shareCopied, setShareCopied] = useState(false);
+
+  const isGated = !user && sessionRoastCount >= ANON_ROAST_LIMIT;
 
   function handleRoastComplete(_result: RoastResult, roastId: string) {
     setSessionRoastCount((c) => c + 1);
@@ -56,6 +60,8 @@ export default function Home() {
           sessionRoastCount={sessionRoastCount}
           userId={user?.uid ?? null}
           onRoastComplete={handleRoastComplete}
+          gated={isGated}
+          onSignIn={signIn}
         />
 
         {lastRoastId && (
