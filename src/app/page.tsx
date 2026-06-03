@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Box, Button, Container, Tooltip, Typography } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
@@ -8,6 +8,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import RoastForm from '@/components/RoastForm';
 import { useAuth } from '@/lib/useAuth';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 import type { RoastResult } from '@/lib/types';
 
 const ANON_ROAST_LIMIT = 3;
@@ -17,12 +19,30 @@ export default function Home() {
   const [sessionRoastCount, setSessionRoastCount] = useState(0);
   const [lastRoastId, setLastRoastId] = useState<string | null>(null);
   const [shareCopied, setShareCopied] = useState(false);
+  const sessionRoastIds = useRef<string[]>([]);
+  const wasAnonymous = useRef(false);
 
   const isGated = !user && sessionRoastCount >= ANON_ROAST_LIMIT;
+
+  useEffect(() => {
+    if (!user) {
+      wasAnonymous.current = true;
+      return;
+    }
+    if (wasAnonymous.current && sessionRoastIds.current.length > 0) {
+      const ids = [...sessionRoastIds.current];
+      sessionRoastIds.current = [];
+      wasAnonymous.current = false;
+      ids.forEach((id) => updateDoc(doc(db, 'roasts', id), { userId: user.uid }));
+    }
+  }, [user]);
 
   function handleRoastComplete(_result: RoastResult, roastId: string) {
     setSessionRoastCount((c) => c + 1);
     setLastRoastId(roastId || null);
+    if (roastId && !user) {
+      sessionRoastIds.current.push(roastId);
+    }
   }
 
   async function handleShare() {
