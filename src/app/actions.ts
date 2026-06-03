@@ -54,6 +54,8 @@ export async function saveRoast(
 }
 
 export async function roastPrompt(prompt: string, sessionRoastCount: number): Promise<ReadableStream> {
+  void sessionRoastCount;
+
   if (!prompt.trim()) {
     throw new Error('Prompt cannot be empty.');
   }

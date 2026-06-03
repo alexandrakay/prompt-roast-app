@@ -23,21 +23,68 @@ export default function RoastResultView({ streamedText, result }: Props) {
 
   if (result) {
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 2 }}>
-        <Section label="The Roast">
-          <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.8 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 0,
+          mt: 3,
+          border: '1px solid',
+          borderColor: 'divider',
+          bgcolor: 'rgba(8, 6, 7, 0.68)',
+        }}
+      >
+        <Section label="The Verdict">
+          <Typography
+            variant="body1"
+            sx={{
+              whiteSpace: 'pre-wrap',
+              lineHeight: 1.85,
+              fontFamily: 'var(--font-instrument-serif)',
+              fontStyle: 'italic',
+              fontSize: { xs: '1.25rem', sm: '1.45rem' },
+              color: 'text.primary',
+            }}
+          >
             {result.roast}
           </Typography>
         </Section>
 
         <Divider />
 
-        <Section label="Charges">
-          <Box component="ul" sx={{ m: 0, pl: 2 }}>
+        <Section label="The Charges">
+          <Box component="ol" sx={{ m: 0, p: 0, display: 'flex', flexDirection: 'column', gap: 1.25 }}>
             {result.charges.map((charge, i) => (
-              <Typography key={i} component="li" variant="body2" sx={{ mb: 0.5 }}>
-                {charge}
-              </Typography>
+              <Box
+                key={i}
+                component="li"
+                sx={{
+                  listStyle: 'none',
+                  display: 'grid',
+                  gridTemplateColumns: '2rem 1fr',
+                  gap: 1.5,
+                  alignItems: 'start',
+                }}
+              >
+                <Typography
+                  aria-hidden
+                  sx={{
+                    width: 28,
+                    height: 28,
+                    display: 'grid',
+                    placeItems: 'center',
+                    bgcolor: 'primary.main',
+                    color: 'background.default',
+                    fontWeight: 900,
+                    fontSize: '0.78rem',
+                  }}
+                >
+                  {i + 1}
+                </Typography>
+                <Typography variant="body2" sx={{ lineHeight: 1.7, color: 'text.secondary' }}>
+                  {charge}
+                </Typography>
+              </Box>
             ))}
           </Box>
         </Section>
@@ -45,7 +92,7 @@ export default function RoastResultView({ streamedText, result }: Props) {
         <Divider />
 
         <Section
-          label="Fixed Prompt"
+          label="The Rewrite"
           action={
             <Tooltip title={copied ? 'Copied!' : 'Copy to clipboard'}>
               <Button
@@ -65,10 +112,11 @@ export default function RoastResultView({ streamedText, result }: Props) {
               whiteSpace: 'pre-wrap',
               fontFamily: 'monospace',
               bgcolor: 'background.paper',
-              p: 2,
-              borderRadius: 1,
+              p: { xs: 2, sm: 2.5 },
+              borderRadius: 0,
               border: '1px solid',
-              borderColor: 'divider',
+              borderColor: 'rgba(244, 255, 82, 0.35)',
+              lineHeight: 1.75,
             }}
           >
             {result.fixed}
@@ -79,10 +127,10 @@ export default function RoastResultView({ streamedText, result }: Props) {
   }
 
   return (
-    <Box sx={{ mt: 2 }}>
+    <Box sx={{ mt: 3, border: '1px solid', borderColor: 'divider', p: 2, bgcolor: 'background.paper' }}>
       <Typography
         variant="body2"
-        sx={{ whiteSpace: 'pre-wrap', color: 'text.secondary', fontFamily: 'monospace' }}
+        sx={{ whiteSpace: 'pre-wrap', color: 'text.secondary', fontFamily: 'monospace', lineHeight: 1.7 }}
       >
         {streamedText}
       </Typography>
@@ -100,9 +148,9 @@ function Section({
   action?: React.ReactNode;
 }) {
   return (
-    <Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
-        <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 700 }}>
+    <Box sx={{ p: { xs: 2, sm: 3 } }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2, gap: 2 }}>
+        <Typography variant="overline" sx={{ color: 'secondary.main', fontWeight: 900, letterSpacing: 0 }}>
           {label}
         </Typography>
         {action}

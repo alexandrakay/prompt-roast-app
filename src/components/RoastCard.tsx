@@ -51,7 +51,7 @@ export default function RoastCard({ doc, shareUrl }: Props) {
         </Box>
       )}
 
-      <Section label="The Roast">
+      <Section label="The Verdict">
         <Typography
           component="p"
           sx={{
@@ -61,6 +61,7 @@ export default function RoastCard({ doc, shareUrl }: Props) {
             lineHeight: 1.3,
             mb: remainder ? 2 : 0,
             color: 'text.primary',
+            textShadow: '0 0 24px rgba(255, 61, 31, 0.22)',
           }}
         >
           {firstSentence}
@@ -72,18 +73,45 @@ export default function RoastCard({ doc, shareUrl }: Props) {
         )}
       </Section>
 
-      <Section label="Charges">
-        <Box component="ul" sx={{ m: 0, pl: 2 }}>
+      <Section label="The Charges">
+        <Box component="ol" sx={{ m: 0, p: 0, display: 'flex', flexDirection: 'column', gap: 1.25 }}>
           {doc.charges.map((charge, i) => (
-            <Typography key={i} component="li" variant="body2" sx={{ mb: 0.5, color: 'text.secondary' }}>
-              {charge}
-            </Typography>
+            <Box
+              key={i}
+              component="li"
+              sx={{
+                listStyle: 'none',
+                display: 'grid',
+                gridTemplateColumns: '2rem 1fr',
+                gap: 1.5,
+                alignItems: 'start',
+              }}
+            >
+              <Typography
+                aria-hidden
+                sx={{
+                  width: 28,
+                  height: 28,
+                  display: 'grid',
+                  placeItems: 'center',
+                  bgcolor: 'primary.main',
+                  color: 'background.default',
+                  fontWeight: 900,
+                  fontSize: '0.78rem',
+                }}
+              >
+                {i + 1}
+              </Typography>
+              <Typography variant="body2" sx={{ lineHeight: 1.7, color: 'text.secondary' }}>
+                {charge}
+              </Typography>
+            </Box>
           ))}
         </Box>
       </Section>
 
       <Section
-        label="Fixed Prompt"
+        label="The Rewrite"
         action={
           <Tooltip title={copied ? 'Copied!' : 'Copy fixed prompt'}>
             <Button
@@ -104,9 +132,9 @@ export default function RoastCard({ doc, shareUrl }: Props) {
             whiteSpace: 'pre-wrap',
             fontFamily: 'monospace',
             bgcolor: 'background.paper',
-            p: 2,
+            p: { xs: 2, sm: 2.5 },
             border: '1px solid',
-            borderColor: 'divider',
+            borderColor: 'rgba(244, 255, 82, 0.35)',
             borderRadius: 0,
             fontSize: '0.82rem',
             lineHeight: 1.7,
@@ -118,7 +146,7 @@ export default function RoastCard({ doc, shareUrl }: Props) {
 
       <Box sx={{ pt: 6, borderTop: '1px solid', borderColor: 'divider', textAlign: 'center' }}>
         <Button component={Link} href="/" variant="contained" size="large" sx={{ px: 4 }}>
-          Roast your own prompt →
+          Roast your own prompt
         </Button>
       </Box>
     </Box>
@@ -140,9 +168,10 @@ function Section({
         <Typography
           variant="overline"
           sx={{
-            color: 'primary.main',
-            letterSpacing: '0.15em',
+            color: 'secondary.main',
+            letterSpacing: 0,
             fontSize: '0.65rem',
+            fontWeight: 900,
           }}
         >
           {label}
