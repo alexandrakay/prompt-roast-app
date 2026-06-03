@@ -25,7 +25,8 @@ export default function RoastCard({ doc, shareUrl }: Props) {
 
   async function handleShare() {
     if (!shareUrl) return;
-    await navigator.clipboard.writeText(shareUrl);
+    const fullUrl = shareUrl.startsWith('http') ? shareUrl : `${window.location.origin}${shareUrl}`;
+    await navigator.clipboard.writeText(fullUrl);
     setShareCopied(true);
     setTimeout(() => setShareCopied(false), 2000);
   }

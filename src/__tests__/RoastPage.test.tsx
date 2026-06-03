@@ -32,4 +32,13 @@ describe('RoastCard', () => {
     await userEvent.click(screen.getByRole('button', { name: /share/i }));
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith('https://example.com/roast/abc123');
   });
+
+  it('prefixes the origin when shareUrl is a relative path', async () => {
+    Object.assign(navigator, { clipboard: { writeText: jest.fn().mockResolvedValue(undefined) } });
+    render(<RoastCard doc={mockDoc} shareUrl="/roast/abc123" />);
+    await userEvent.click(screen.getByRole('button', { name: /share/i }));
+    const written = (navigator.clipboard.writeText as jest.Mock).mock.calls[0][0] as string;
+    expect(written).toMatch(/^https?:\/\//);
+    expect(written).toContain('/roast/abc123');
+  });
 });
