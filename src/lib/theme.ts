@@ -4,20 +4,20 @@ export const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#ff6b2b',
+      main: '#ff3d1f',
     },
     secondary: {
-      main: '#ffffff',
+      main: '#f4ff52',
     },
     background: {
-      default: '#0a0a0a',
-      paper: '#111111',
+      default: '#080607',
+      paper: '#151010',
     },
     text: {
-      primary: '#ffffff',
-      secondary: '#888888',
+      primary: '#fff7ef',
+      secondary: '#b89f98',
     },
-    divider: '#1e1e1e',
+    divider: '#31201d',
   },
   typography: {
     fontFamily: 'var(--font-inter), "Helvetica Neue", "Arial", sans-serif',
@@ -46,9 +46,29 @@ export const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: 'none',
-          fontWeight: 600,
-          borderRadius: 2,
+          textTransform: 'uppercase',
+          fontWeight: 900,
+          borderRadius: 0,
+          letterSpacing: 0,
+          boxShadow: 'none',
+        },
+        contained: {
+          backgroundColor: '#ff3d1f',
+          color: '#080607',
+          border: '1px solid #ff3d1f',
+          '&:hover': {
+            backgroundColor: '#f4ff52',
+            borderColor: '#f4ff52',
+            boxShadow: '6px 6px 0 #000000',
+          },
+        },
+        outlined: {
+          borderColor: '#5a332d',
+          color: '#fff7ef',
+          '&:hover': {
+            borderColor: '#ff3d1f',
+            backgroundColor: 'rgba(255, 61, 31, 0.08)',
+          },
         },
       },
     },
@@ -56,8 +76,8 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           backgroundImage: 'none',
-          border: '1px solid #1e1e1e',
-          borderRadius: 2,
+          border: '1px solid #31201d',
+          borderRadius: 0,
         },
       },
     },
@@ -72,7 +92,7 @@ export const theme = createTheme({
     MuiDivider: {
       styleOverrides: {
         root: {
-          borderColor: '#1e1e1e',
+          borderColor: '#31201d',
         },
       },
     },
@@ -80,7 +100,25 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-root': {
-            borderRadius: 2,
+            borderRadius: 0,
+            backgroundColor: '#100b0b',
+            '& fieldset': {
+              borderColor: '#5a332d',
+            },
+            '&:hover fieldset': {
+              borderColor: '#ff3d1f',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#f4ff52',
+              borderWidth: 1,
+            },
+          },
+          '& .MuiInputBase-input': {
+            color: '#fff7ef',
+            fontFamily: 'var(--font-inter), "Helvetica Neue", "Arial", sans-serif',
+          },
+          '& .MuiFormHelperText-root': {
+            color: '#b89f98',
           },
         },
       },

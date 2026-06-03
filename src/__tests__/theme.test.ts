@@ -1,15 +1,14 @@
 import { theme } from '../lib/theme';
 
 describe('theme', () => {
-  it('uses orange/amber as primary accent, not red', () => {
-    const primary = theme.palette.primary.main.toLowerCase();
-    expect(primary).not.toBe('#ff4444');
-    expect(primary).toMatch(/^#(ff6|ff7|f97|ea|f6|fb)/);
+  it('uses a hot ember primary with an acidic secondary accent', () => {
+    expect(theme.palette.primary.main.toLowerCase()).toBe('#ff3d1f');
+    expect(theme.palette.secondary.main.toLowerCase()).toBe('#f4ff52');
   });
 
   it('maintains dark mode with near-black background', () => {
     expect(theme.palette.mode).toBe('dark');
-    expect(theme.palette.background.default).toBe('#0a0a0a');
+    expect(theme.palette.background.default).toBe('#080607');
   });
 
   it('uses CSS variable for body font so display font can override', () => {

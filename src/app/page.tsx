@@ -38,28 +38,43 @@ export default function Home() {
       sx={{
         minHeight: '100vh',
         bgcolor: 'background.default',
+        background:
+          'radial-gradient(circle at 20% 0%, rgba(255, 61, 31, 0.18), transparent 28%), linear-gradient(135deg, rgba(244, 255, 82, 0.08) 0 1px, transparent 1px 18px), #080607',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        pt: { xs: 6, sm: 10 },
+        pt: { xs: 5, sm: 8 },
         pb: 10,
       }}
     >
       <Container maxWidth="md">
-        <Box sx={{ mb: 8, borderBottom: '1px solid', borderColor: 'divider', pb: 8 }}>
+        <Box sx={{ mb: { xs: 4, sm: 6 }, borderBottom: '1px solid', borderColor: 'divider', pb: { xs: 5, sm: 7 } }}>
+          <Typography
+            variant="overline"
+            sx={{
+              color: 'secondary.main',
+              display: 'block',
+              mb: 2,
+              letterSpacing: 0,
+              fontWeight: 900,
+            }}
+          >
+            Brutal feedback. Better prompts.
+          </Typography>
           <Typography
             component="h1"
             sx={{
               fontFamily: 'var(--font-inter)',
               fontWeight: 900,
-              fontSize: { xs: '3.5rem', sm: '5.5rem', md: '7rem' },
-              lineHeight: 0.95,
-              letterSpacing: '-0.04em',
+              fontSize: { xs: '3.2rem', sm: '5.3rem', md: '7rem' },
+              lineHeight: 0.9,
+              letterSpacing: 0,
               mb: 3,
               textTransform: 'uppercase',
             }}
           >
-            Prompt{' '}
+            Prompt
+            <br />
             <Box
               component="span"
               sx={{
@@ -68,6 +83,7 @@ export default function Home() {
                 fontWeight: 400,
                 textTransform: 'none',
                 color: 'primary.main',
+                textShadow: '0 0 28px rgba(255, 61, 31, 0.45)',
               }}
             >
               Roast
@@ -76,19 +92,43 @@ export default function Home() {
           <Typography
             variant="body1"
             color="text.secondary"
-            sx={{ maxWidth: '40ch', fontSize: { xs: '0.9rem', sm: '1rem' } }}
+            sx={{ maxWidth: '42ch', fontSize: { xs: '0.95rem', sm: '1.05rem' }, lineHeight: 1.7 }}
           >
-            Paste your prompt. Get it torn apart. Walk away better.
+            Paste the prompt you&apos;ve been pretending is fine. We&apos;ll drag the weak spots, file the charges, and hand you back the version that actually works.
           </Typography>
         </Box>
 
-        <RoastForm
-          sessionRoastCount={sessionRoastCount}
-          userId={user?.uid ?? null}
-          onRoastComplete={handleRoastComplete}
-          gated={isGated}
-          onSignIn={signIn}
-        />
+        <Box
+          sx={{
+            position: 'relative',
+            p: { xs: 2, sm: 3 },
+            border: '1px solid',
+            borderColor: 'divider',
+            bgcolor: 'rgba(21, 16, 16, 0.82)',
+            boxShadow: { sm: '10px 10px 0 #000000' },
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              inset: '-1px -1px auto -1px',
+              height: 3,
+              background: 'linear-gradient(90deg, #ff3d1f, #f4ff52, #ff3d1f)',
+            },
+          }}
+        >
+          <Typography
+            variant="overline"
+            sx={{ color: 'primary.main', display: 'block', mb: 2, letterSpacing: 0 }}
+          >
+            Enter the prompt
+          </Typography>
+          <RoastForm
+            sessionRoastCount={sessionRoastCount}
+            userId={user?.uid ?? null}
+            onRoastComplete={handleRoastComplete}
+            gated={isGated}
+            onSignIn={signIn}
+          />
+        </Box>
 
         {lastRoastId && (
           <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import { roastPrompt, saveRoast } from '@/app/actions';
 import type { RoastResult } from '@/lib/types';
 import RoastResultView from './RoastResult';
@@ -70,10 +71,10 @@ export default function RoastForm({ sessionRoastCount, userId = null, onRoastCom
     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}>
       <TextField
         multiline
-        minRows={4}
+        minRows={6}
         maxRows={12}
         fullWidth
-        placeholder="Paste your prompt here…"
+        placeholder="Paste the prompt. Leave the dignity."
         value={prompt}
         onChange={(e) => {
           setPrompt(e.target.value);
@@ -83,6 +84,12 @@ export default function RoastForm({ sessionRoastCount, userId = null, onRoastCom
         helperText={error || ' '}
         disabled={loading || gated}
         slotProps={{ htmlInput: { 'aria-label': 'Prompt input' } }}
+        sx={{
+          '& textarea': {
+            fontSize: { xs: '0.98rem', sm: '1.05rem' },
+            lineHeight: 1.7,
+          },
+        }}
       />
 
       {gated ? (
@@ -97,15 +104,16 @@ export default function RoastForm({ sessionRoastCount, userId = null, onRoastCom
             borderRadius: 2,
             bgcolor: 'background.paper',
             border: '1px solid',
-            borderColor: 'divider',
+            borderColor: 'primary.main',
             textAlign: 'center',
+            boxShadow: { sm: '8px 8px 0 #000000' },
           }}
         >
           <Typography variant="body1" sx={{ fontWeight: 600 }}>
-            You&apos;ve been roasted enough for free.
+            You&apos;ve taken enough free heat.
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Sign in to keep the heat going.
+            Sign in to keep the roast line open.
           </Typography>
           <Button variant="contained" onClick={onSignIn}>
             Sign in
@@ -116,10 +124,10 @@ export default function RoastForm({ sessionRoastCount, userId = null, onRoastCom
           variant="contained"
           onClick={handleSubmit}
           disabled={loading}
-          sx={{ alignSelf: 'flex-end', minWidth: 120 }}
-          startIcon={loading ? <CircularProgress size={16} color="inherit" /> : null}
+          sx={{ alignSelf: 'flex-end', minWidth: 156, py: 1.2 }}
+          startIcon={loading ? <CircularProgress size={16} color="inherit" /> : <LocalFireDepartmentIcon />}
         >
-          {loading ? 'Roasting…' : 'Roast it'}
+          {loading ? 'Roasting...' : 'Light it up'}
         </Button>
       )}
 

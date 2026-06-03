@@ -10,14 +10,14 @@ jest.mock('../app/actions', () => ({
 describe('RoastForm', () => {
   it('blocks empty submission and shows an error', async () => {
     render(<RoastForm sessionRoastCount={0} onRoastComplete={() => {}} />);
-    await userEvent.click(screen.getByRole('button', { name: /roast/i }));
+    await userEvent.click(screen.getByRole('button', { name: /light it up/i }));
     expect(screen.getByText(/prompt cannot be empty/i)).toBeInTheDocument();
   });
 
   it('renders a textarea and submit button', () => {
     render(<RoastForm sessionRoastCount={0} onRoastComplete={() => {}} />);
     expect(screen.getByRole('textbox')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /roast/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /light it up/i })).toBeInTheDocument();
   });
 
   it('disables form and shows sign-in prompt when gated', () => {
