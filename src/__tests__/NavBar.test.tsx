@@ -37,6 +37,12 @@ describe('NavBar', () => {
     expect(screen.getByRole('link', { name: /history/i })).toBeInTheDocument();
   });
 
+  it('shows a CLI link visible to all users', () => {
+    mockUseAuth.mockReturnValue({ user: null, loading: false, signIn: mockSignIn, signOut: mockSignOut });
+    render(<NavBar />);
+    expect(screen.getByRole('link', { name: /cli/i })).toBeInTheDocument();
+  });
+
   it('calls signOut when sign out is triggered', async () => {
     mockUseAuth.mockReturnValue({
       user: { displayName: 'Alex', email: 'alex@example.com', photoURL: null },

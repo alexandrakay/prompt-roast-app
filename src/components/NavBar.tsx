@@ -38,6 +38,9 @@ export default function NavBar() {
           <Button component={Link} href="/feed" size="small" color="inherit" sx={{ letterSpacing: '0.05em', fontSize: '0.75rem' }}>
             Feed
           </Button>
+          <Button component={Link} href="/cli" size="small" color="inherit" sx={{ letterSpacing: '0.05em', fontSize: '0.75rem' }}>
+            CLI
+          </Button>
           {loading ? (
             <Skeleton variant="circular" width={28} height={28} />
           ) : user ? (
