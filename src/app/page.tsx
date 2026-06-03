@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Button, Container, Tooltip, Typography } from '@mui/material';
+import ShareIcon from '@mui/icons-material/Share';
+import CheckIcon from '@mui/icons-material/Check';
 import RoastForm from '@/components/RoastForm';
 import { useAuth } from '@/lib/useAuth';
 import type { RoastResult } from '@/lib/types';
@@ -9,9 +11,20 @@ import type { RoastResult } from '@/lib/types';
 export default function Home() {
   const { user } = useAuth();
   const [sessionRoastCount, setSessionRoastCount] = useState(0);
+  const [lastRoastId, setLastRoastId] = useState<string | null>(null);
+  const [shareCopied, setShareCopied] = useState(false);
 
-  function handleRoastComplete(_result: RoastResult, _roastId: string) {
+  function handleRoastComplete(_result: RoastResult, roastId: string) {
     setSessionRoastCount((c) => c + 1);
+    setLastRoastId(roastId || null);
+  }
+
+  async function handleShare() {
+    if (!lastRoastId) return;
+    const url = `${window.location.origin}/roast/${lastRoastId}`;
+    await navigator.clipboard.writeText(url);
+    setShareCopied(true);
+    setTimeout(() => setShareCopied(false), 2000);
   }
 
   return (
@@ -41,8 +54,23 @@ export default function Home() {
 
         <RoastForm
           sessionRoastCount={sessionRoastCount}
+          userId={user?.uid ?? null}
           onRoastComplete={handleRoastComplete}
         />
+
+        {lastRoastId && (
+          <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
+            <Tooltip title={shareCopied ? 'Link copied!' : 'Copy shareable link'}>
+              <Button
+                variant="outlined"
+                startIcon={shareCopied ? <CheckIcon /> : <ShareIcon />}
+                onClick={handleShare}
+              >
+                {shareCopied ? 'Copied!' : 'Share this roast'}
+              </Button>
+            </Tooltip>
+          </Box>
+        )}
       </Container>
     </Box>
   );
