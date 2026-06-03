@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Box, Button, CircularProgress, TextField } from '@mui/material';
+import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
 import { roastPrompt, saveRoast } from '@/app/actions';
 import type { RoastResult } from '@/lib/types';
 import RoastResultView from './RoastResult';
@@ -10,9 +10,11 @@ export interface RoastFormProps {
   sessionRoastCount: number;
   userId?: string | null;
   onRoastComplete: (result: RoastResult, roastId: string) => void;
+  gated?: boolean;
+  onSignIn?: () => void;
 }
 
-export default function RoastForm({ sessionRoastCount, userId = null, onRoastComplete }: RoastFormProps) {
+export default function RoastForm({ sessionRoastCount, userId = null, onRoastComplete, gated = false, onSignIn }: RoastFormProps) {
   const [prompt, setPrompt] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -79,18 +81,47 @@ export default function RoastForm({ sessionRoastCount, userId = null, onRoastCom
         }}
         error={!!error}
         helperText={error || ' '}
-        disabled={loading}
+        disabled={loading || gated}
         slotProps={{ htmlInput: { 'aria-label': 'Prompt input' } }}
       />
-      <Button
-        variant="contained"
-        onClick={handleSubmit}
-        disabled={loading}
-        sx={{ alignSelf: 'flex-end', minWidth: 120 }}
-        startIcon={loading ? <CircularProgress size={16} color="inherit" /> : null}
-      >
-        {loading ? 'Roasting…' : 'Roast it'}
-      </Button>
+
+      {gated ? (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 2,
+            py: 3,
+            px: 2,
+            borderRadius: 2,
+            bgcolor: 'background.paper',
+            border: '1px solid',
+            borderColor: 'divider',
+            textAlign: 'center',
+          }}
+        >
+          <Typography variant="body1" sx={{ fontWeight: 600 }}>
+            You&apos;ve been roasted enough for free.
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Sign in to keep the heat going.
+          </Typography>
+          <Button variant="contained" onClick={onSignIn}>
+            Sign in
+          </Button>
+        </Box>
+      ) : (
+        <Button
+          variant="contained"
+          onClick={handleSubmit}
+          disabled={loading}
+          sx={{ alignSelf: 'flex-end', minWidth: 120 }}
+          startIcon={loading ? <CircularProgress size={16} color="inherit" /> : null}
+        >
+          {loading ? 'Roasting…' : 'Roast it'}
+        </Button>
+      )}
 
       {(streamedText || result) && (
         <RoastResultView streamedText={streamedText} result={result} />
