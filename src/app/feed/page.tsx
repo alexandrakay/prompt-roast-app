@@ -25,6 +25,7 @@ function truncate(text: string, max: number): string {
 export default function FeedPage() {
   const [roasts, setRoasts] = useState<RoastDocument[]>([]);
   const [fetching, setFetching] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const q = query(collection(db, 'roasts'), orderBy('createdAt', 'desc'), limit(20));
@@ -44,6 +45,7 @@ export default function FeedPage() {
         });
         setRoasts(docs);
       })
+      .catch(() => setError(true))
       .finally(() => setFetching(false));
   }, []);
 
@@ -51,6 +53,14 @@ export default function FeedPage() {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', pt: 10 }}>
         <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', pt: 10 }}>
+        <Typography color="text.secondary">Something went wrong — try refreshing.</Typography>
       </Box>
     );
   }

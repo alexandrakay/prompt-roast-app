@@ -58,6 +58,15 @@ describe('HistoryPage', () => {
     expect(screen.getByText(/Write me a poem/i)).toBeInTheDocument();
   });
 
+  it('shows an error state when the Firestore query rejects', async () => {
+    mockUseAuth.mockReturnValue({ user: { uid: 'u1' }, loading: false });
+    mockGetDocs.mockRejectedValue(new Error('Permission denied'));
+    render(<HistoryPage />);
+    await waitFor(() =>
+      expect(screen.getByText(/something went wrong/i)).toBeInTheDocument()
+    );
+  });
+
   it('removes a roast from the list when delete is clicked', async () => {
     mockUseAuth.mockReturnValue({ user: { uid: 'u1' }, loading: false });
     mockGetDocs.mockResolvedValue(makeSnapshot([fakeRoast]));
