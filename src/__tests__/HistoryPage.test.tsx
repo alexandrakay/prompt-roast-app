@@ -41,15 +41,23 @@ function makeSnapshot(docs: typeof fakeRoast[]) {
 describe('HistoryPage', () => {
   beforeEach(() => jest.clearAllMocks());
 
-  it('redirects to / when user is not signed in', async () => {
-    mockUseAuth.mockReturnValue({ user: null, loading: false });
-    mockGetDocs.mockResolvedValue(makeSnapshot([]));
+  it('shows a sign-in prompt when user is not signed in', async () => {
+    mockUseAuth.mockReturnValue({ user: null, loading: false, signIn: jest.fn() });
     render(<HistoryPage />);
-    await waitFor(() => expect(mockReplace).toHaveBeenCalledWith('/'));
+    expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
+    expect(mockReplace).not.toHaveBeenCalled();
+  });
+
+  it('calls signIn when the sign-in button is clicked', async () => {
+    const mockSignIn = jest.fn();
+    mockUseAuth.mockReturnValue({ user: null, loading: false, signIn: mockSignIn });
+    render(<HistoryPage />);
+    fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
+    expect(mockSignIn).toHaveBeenCalled();
   });
 
   it('renders roast history for a signed-in user', async () => {
-    mockUseAuth.mockReturnValue({ user: { uid: 'u1' }, loading: false });
+    mockUseAuth.mockReturnValue({ user: { uid: 'u1' }, loading: false, signIn: jest.fn() });
     mockGetDocs.mockResolvedValue(makeSnapshot([fakeRoast]));
     render(<HistoryPage />);
     await waitFor(() =>
@@ -68,7 +76,7 @@ describe('HistoryPage', () => {
   });
 
   it('removes a roast from the list when delete is clicked', async () => {
-    mockUseAuth.mockReturnValue({ user: { uid: 'u1' }, loading: false });
+    mockUseAuth.mockReturnValue({ user: { uid: 'u1' }, loading: false, signIn: jest.fn() });
     mockGetDocs.mockResolvedValue(makeSnapshot([fakeRoast]));
     render(<HistoryPage />);
     await waitFor(() => screen.getByText(/laughably vague/i));
