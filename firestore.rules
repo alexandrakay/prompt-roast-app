@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /roasts/{roastId} {
+      // Anyone can read — public feed and shareable roast links
+      allow read: if true;
+
+      // Anyone can create — saveRoast runs server-side without an auth token
+      allow create: if true;
+
+      // Authenticated users can claim an anonymous roast (userId null → their uid)
+      // or update a roast they already own
+      allow update: if request.auth != null
+                    && (resource.data.userId == null
+                        || resource.data.userId == request.auth.uid)
+                    && request.resource.data.userId == request.auth.uid;
+
+      // Authenticated users can delete their own roasts
+      allow delete: if request.auth != null
+                    && resource.data.userId == request.auth.uid;
+    }
+  }
+}
