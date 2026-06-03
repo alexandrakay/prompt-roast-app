@@ -20,6 +20,9 @@ export default function NavBar() {
         </Typography>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Button component={Link} href="/feed" size="small" color="inherit">
+            Feed
+          </Button>
           {loading ? (
             <Skeleton variant="circular" width={32} height={32} />
           ) : user ? (
