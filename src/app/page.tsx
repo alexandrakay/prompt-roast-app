@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Box, Button, Container, Tooltip, Typography } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import CheckIcon from '@mui/icons-material/Check';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import RoastForm from '@/components/RoastForm';
 import { useAuth } from '@/lib/useAuth';
 import type { RoastResult } from '@/lib/types';
@@ -65,7 +67,15 @@ export default function Home() {
         />
 
         {lastRoastId && (
-          <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
+            <Button
+              component={Link}
+              href={`/roast/${lastRoastId}`}
+              variant="contained"
+              startIcon={<OpenInNewIcon />}
+            >
+              View your roast
+            </Button>
             <Tooltip title={shareCopied ? 'Link copied!' : 'Copy shareable link'}>
               <Button
                 variant="outlined"
