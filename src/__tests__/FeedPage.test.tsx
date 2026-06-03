@@ -58,4 +58,12 @@ describe('FeedPage', () => {
       expect(screen.getByText(/no roasts yet/i)).toBeInTheDocument()
     );
   });
+
+  it('shows an error state when the Firestore query rejects', async () => {
+    mockGetDocs.mockRejectedValue(new Error('Missing index'));
+    render(<FeedPage />);
+    await waitFor(() =>
+      expect(screen.getByText(/something went wrong/i)).toBeInTheDocument()
+    );
+  });
 });

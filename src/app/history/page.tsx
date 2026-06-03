@@ -39,6 +39,7 @@ export default function HistoryPage() {
   const router = useRouter();
   const [roasts, setRoasts] = useState<RoastDocument[]>([]);
   const [fetching, setFetching] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (authLoading) return;
@@ -65,6 +66,7 @@ export default function HistoryPage() {
         docs.sort((a, b) => b.createdAt - a.createdAt);
         setRoasts(docs);
       })
+      .catch(() => setError(true))
       .finally(() => setFetching(false));
   }, [user, authLoading, router]);
 
@@ -77,6 +79,14 @@ export default function HistoryPage() {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', pt: 10 }}>
         <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', pt: 10 }}>
+        <Typography color="text.secondary">Something went wrong — try refreshing.</Typography>
       </Box>
     );
   }
