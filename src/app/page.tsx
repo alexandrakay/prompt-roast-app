@@ -46,14 +46,38 @@ export default function Home() {
       }}
     >
       <Container maxWidth="md">
-        <Box sx={{ mb: 6, textAlign: 'center' }}>
+        <Box sx={{ mb: 8, borderBottom: '1px solid', borderColor: 'divider', pb: 8 }}>
           <Typography
-            variant="h3"
-            sx={{ fontWeight: 800, letterSpacing: '-0.03em', mb: 1 }}
+            component="h1"
+            sx={{
+              fontFamily: 'var(--font-inter)',
+              fontWeight: 900,
+              fontSize: { xs: '3.5rem', sm: '5.5rem', md: '7rem' },
+              lineHeight: 0.95,
+              letterSpacing: '-0.04em',
+              mb: 3,
+              textTransform: 'uppercase',
+            }}
           >
-            Prompt Roast
+            Prompt{' '}
+            <Box
+              component="span"
+              sx={{
+                fontFamily: 'var(--font-instrument-serif)',
+                fontStyle: 'italic',
+                fontWeight: 400,
+                textTransform: 'none',
+                color: 'primary.main',
+              }}
+            >
+              Roast
+            </Box>
           </Typography>
-          <Typography variant="body1" color="text.secondary">
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            sx={{ maxWidth: '40ch', fontSize: { xs: '0.9rem', sm: '1rem' } }}
+          >
             Paste your prompt. Get it torn apart. Walk away better.
           </Typography>
         </Box>
