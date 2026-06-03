@@ -82,23 +82,34 @@ export default function HistoryPage() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: { xs: 6, sm: 10 } }}>
+    <Box
+      sx={{
+        minHeight: '100vh',
+        bgcolor: 'background.default',
+        background:
+          'radial-gradient(circle at 85% 0%, rgba(244, 255, 82, 0.1), transparent 28%), #080607',
+        py: { xs: 6, sm: 10 },
+      }}
+    >
       <Container maxWidth="md">
-        <Typography variant="h4" sx={{ fontWeight: 800, mb: 4 }}>
+        <Typography variant="overline" sx={{ color: 'secondary.main', letterSpacing: 0, fontWeight: 900 }}>
+          Private receipts
+        </Typography>
+        <Typography variant="h4" sx={{ fontWeight: 900, mb: 4, textTransform: 'uppercase', letterSpacing: 0 }}>
           Your Roast History
         </Typography>
 
         {roasts.length === 0 ? (
           <Box sx={{ textAlign: 'center', py: 8 }}>
             <Typography color="text.secondary" sx={{ mb: 2 }}>
-              No roasts yet. Paste a prompt and get torn apart.
+              No roasts yet. Paste a prompt and take the heat.
             </Typography>
             <Button component={Link} href="/" variant="contained">
               Roast a prompt
             </Button>
           </Box>
         ) : (
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0, borderTop: '1px solid', borderColor: 'divider' }}>
             {roasts.map((roast, i) => (
               <Box key={roast.id}>
                 {i > 0 && <Divider />}
@@ -108,6 +119,12 @@ export default function HistoryPage() {
                     alignItems: 'flex-start',
                     gap: 2,
                     py: 3,
+                    px: { xs: 0, sm: 2 },
+                    borderLeft: { sm: '3px solid transparent' },
+                    '&:hover': {
+                      bgcolor: 'rgba(244, 255, 82, 0.05)',
+                      borderLeftColor: 'secondary.main',
+                    },
                   }}
                 >
                   <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -121,17 +138,18 @@ export default function HistoryPage() {
                         sx={{
                           fontFamily: 'monospace',
                           color: 'text.secondary',
-                          mb: 0.5,
+                          mb: 0.75,
                           fontSize: '0.75rem',
+                          lineHeight: 1.6,
                         }}
                       >
                         {truncate(roast.originalPrompt, 100)}
                       </Typography>
-                      <Typography variant="body1" sx={{ fontWeight: 500, mb: 0.5 }}>
+                      <Typography variant="body1" sx={{ fontWeight: 800, mb: 0.75, lineHeight: 1.5 }}>
                         {truncate(roast.roast.split(/[.!?]/)[0] ?? roast.roast, 120)}
                       </Typography>
                     </Box>
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography variant="caption" sx={{ color: 'primary.main', fontWeight: 900, textTransform: 'uppercase' }}>
                       {relativeTime(roast.createdAt)}
                     </Typography>
                   </Box>

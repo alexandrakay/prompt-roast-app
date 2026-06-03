@@ -56,18 +56,29 @@ export default function FeedPage() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: { xs: 6, sm: 10 } }}>
+    <Box
+      sx={{
+        minHeight: '100vh',
+        bgcolor: 'background.default',
+        background:
+          'radial-gradient(circle at 85% 0%, rgba(255, 61, 31, 0.14), transparent 30%), #080607',
+        py: { xs: 6, sm: 10 },
+      }}
+    >
       <Container maxWidth="md">
-        <Typography variant="h4" sx={{ fontWeight: 800, mb: 4 }}>
-          Recent Roasts
+        <Typography variant="overline" sx={{ color: 'secondary.main', letterSpacing: 0, fontWeight: 900 }}>
+          Public evidence
+        </Typography>
+        <Typography variant="h4" sx={{ fontWeight: 900, mb: 4, textTransform: 'uppercase', letterSpacing: 0 }}>
+          Burn Book
         </Typography>
 
         {roasts.length === 0 ? (
           <Typography color="text.secondary" sx={{ py: 8, textAlign: 'center' }}>
-            No roasts yet. Be the first.
+            No roasts yet. Be the first to take the heat.
           </Typography>
         ) : (
-          <Box>
+          <Box sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
             {roasts.map((roast, i) => (
               <Box key={roast.id}>
                 {i > 0 && <Divider />}
@@ -77,21 +88,26 @@ export default function FeedPage() {
                   sx={{
                     display: 'block',
                     py: 3,
+                    px: { xs: 0, sm: 2 },
                     textDecoration: 'none',
                     color: 'inherit',
-                    '&:hover': { opacity: 0.8 },
+                    borderLeft: { sm: '3px solid transparent' },
+                    '&:hover': {
+                      bgcolor: 'rgba(255, 61, 31, 0.07)',
+                      borderLeftColor: 'primary.main',
+                    },
                   }}
                 >
                   <Typography
                     variant="body2"
-                    sx={{ fontFamily: 'monospace', color: 'text.secondary', mb: 0.5, fontSize: '0.75rem' }}
+                    sx={{ fontFamily: 'monospace', color: 'text.secondary', mb: 0.75, fontSize: '0.75rem', lineHeight: 1.6 }}
                   >
                     {truncate(roast.originalPrompt, 100)}
                   </Typography>
-                  <Typography variant="body1" sx={{ fontWeight: 500, mb: 0.5 }}>
+                  <Typography variant="body1" sx={{ fontWeight: 800, mb: 0.75, lineHeight: 1.5 }}>
                     {truncate(roast.roast.split(/[.!?]/)[0] ?? roast.roast, 120)}
                   </Typography>
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography variant="caption" sx={{ color: 'primary.main', fontWeight: 900, textTransform: 'uppercase' }}>
                     {relativeTime(roast.createdAt)}
                   </Typography>
                 </Box>
