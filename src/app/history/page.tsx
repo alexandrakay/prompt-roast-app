@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import {
   Box,
   Button,
@@ -35,8 +34,7 @@ function truncate(text: string, max: number): string {
 }
 
 export default function HistoryPage() {
-  const { user, loading: authLoading } = useAuth();
-  const router = useRouter();
+  const { user, loading: authLoading, signIn } = useAuth();
   const [roasts, setRoasts] = useState<RoastDocument[]>([]);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState(false);
@@ -44,7 +42,7 @@ export default function HistoryPage() {
   useEffect(() => {
     if (authLoading) return;
     if (!user) {
-      router.replace('/');
+      setFetching(false);
       return;
     }
 
@@ -68,7 +66,7 @@ export default function HistoryPage() {
       })
       .catch(() => setError(true))
       .finally(() => setFetching(false));
-  }, [user, authLoading, router]);
+  }, [user, authLoading]);
 
   function handleDelete(id: string) {
     setRoasts((prev) => prev.filter((r) => r.id !== id));
@@ -87,6 +85,15 @@ export default function HistoryPage() {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', pt: 10 }}>
         <Typography color="text.secondary">Something went wrong — try refreshing.</Typography>
+      </Box>
+    );
+  }
+
+  if (!user) {
+    return (
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: 2 }}>
+        <Typography color="text.secondary">Sign in to view your roast history.</Typography>
+        <Button variant="contained" onClick={signIn}>Sign in</Button>
       </Box>
     );
   }
