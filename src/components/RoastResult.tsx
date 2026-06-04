@@ -81,7 +81,7 @@ export default function RoastResultView({ streamedText, result }: Props) {
                 >
                   {i + 1}
                 </Typography>
-                <Typography variant="body2" sx={{ lineHeight: 1.7, color: 'text.secondary' }}>
+                <Typography data-testid="charge-text" variant="body2" sx={{ lineHeight: 1.7, color: 'text.primary' }}>
                   {charge}
                 </Typography>
               </Box>
