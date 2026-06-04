@@ -33,4 +33,11 @@ describe('RoastResult', () => {
     render(<RoastResultView streamedText="[ROAST]\nLoading..." result={null} />);
     expect(screen.getByText(/Loading\.\.\./i)).toBeInTheDocument();
   });
+
+  it('renders streamed text in the primary-contrast streaming container', () => {
+    render(<RoastResultView streamedText="streaming content here" result={null} />);
+    const container = screen.getByTestId('streaming-text-container');
+    expect(container).toBeInTheDocument();
+    expect(container).toHaveTextContent('streaming content here');
+  });
 });

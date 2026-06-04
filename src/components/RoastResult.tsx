@@ -127,10 +127,10 @@ export default function RoastResultView({ streamedText, result }: Props) {
   }
 
   return (
-    <Box sx={{ mt: 3, border: '1px solid', borderColor: 'divider', p: 2, bgcolor: 'background.paper' }}>
+    <Box data-testid="streaming-text-container" sx={{ mt: 3, border: '1px solid', borderColor: 'divider', p: 2, bgcolor: 'background.paper' }}>
       <Typography
         variant="body2"
-        sx={{ whiteSpace: 'pre-wrap', color: 'text.secondary', fontFamily: 'monospace', lineHeight: 1.7 }}
+        sx={{ whiteSpace: 'pre-wrap', color: 'text.primary', fontFamily: 'monospace', lineHeight: 1.7 }}
       >
         {streamedText}
       </Typography>
