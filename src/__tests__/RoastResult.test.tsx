@@ -40,4 +40,12 @@ describe('RoastResult', () => {
     expect(container).toBeInTheDocument();
     expect(container).toHaveTextContent('streaming content here');
   });
+
+  it('renders each charge in a high-contrast charge text container', () => {
+    render(<RoastResultView streamedText="" result={mockResult} />);
+    const chargeTexts = screen.getAllByTestId('charge-text');
+    expect(chargeTexts).toHaveLength(2);
+    expect(chargeTexts[0]).toHaveTextContent('Vagueness');
+    expect(chargeTexts[1]).toHaveTextContent('Ambiguity');
+  });
 });
