@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Box, CircularProgress, Container, Divider, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Container, Divider, Typography } from '@mui/material';
 import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import type { RoastDocument } from '@/lib/types';
@@ -84,9 +84,14 @@ export default function FeedPage() {
         </Typography>
 
         {roasts.length === 0 ? (
-          <Typography color="text.secondary" sx={{ py: 8, textAlign: 'center' }}>
-            No roasts yet. Be the first to take the heat.
-          </Typography>
+          <Box sx={{ textAlign: 'center', py: 8 }}>
+            <Typography color="text.secondary" sx={{ mb: 2 }}>
+              No roasts yet. Be the first to take the heat.
+            </Typography>
+            <Button component={Link} href="/" variant="contained">
+              Roast a prompt
+            </Button>
+          </Box>
         ) : (
           <Box sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
             {roasts.map((roast, i) => (
