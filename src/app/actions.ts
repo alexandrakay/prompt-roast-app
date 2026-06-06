@@ -1,8 +1,10 @@
 'use server';
 
 import Anthropic from '@anthropic-ai/sdk';
+import { headers } from 'next/headers';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { checkRateLimit } from '@/lib/rateLimit';
 import type { RoastResult } from '@/lib/types';
 
 const SYSTEM_PROMPT = `You are a brutal, snarky prompt critic. Your job is to tear apart bad prompts, charge for every crime, and then hand back a fixed version.
@@ -58,6 +60,13 @@ export async function roastPrompt(prompt: string, sessionRoastCount: number): Pr
 
   if (!prompt.trim()) {
     throw new Error('Prompt cannot be empty.');
+  }
+
+  const headerList = await headers();
+  const ip = headerList.get('x-forwarded-for')?.split(',')[0]?.trim() ?? '127.0.0.1';
+  const { allowed } = checkRateLimit(ip, 20, 60 * 60 * 1000);
+  if (!allowed) {
+    throw new Error('Too many roasts from this address. Take a breath and try again later.');
   }
 
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
