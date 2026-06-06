@@ -56,7 +56,7 @@ export default function CliPage() {
                 <Box
                   sx={{
                     fontFamily: 'monospace',
-                    fontSize: '1rem',
+                    fontSize: { xs: '0.85rem', sm: '1rem' },
                     bgcolor: 'rgba(255,255,255,0.04)',
                     border: '1px solid',
                     borderColor: 'divider',
@@ -66,8 +66,9 @@ export default function CliPage() {
                     mb: 1.5,
                     letterSpacing: '0.02em',
                     color: 'secondary.main',
-                    display: 'inline-block',
-                    minWidth: 280,
+                    display: 'block',
+                    overflowX: 'auto',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   $ {step.command}

@@ -34,11 +34,11 @@ export default function NavBar() {
           Prompt Roast
         </Typography>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.25, sm: 0.5 } }}>
           <Button component={Link} href="/feed" size="small" color="inherit" sx={{ letterSpacing: '0.05em', fontSize: '0.75rem' }}>
             Feed
           </Button>
-          <Button component={Link} href="/cli" size="small" color="inherit" sx={{ letterSpacing: '0.05em', fontSize: '0.75rem' }}>
+          <Button component={Link} href="/cli" size="small" color="inherit" sx={{ letterSpacing: '0.05em', fontSize: '0.75rem', display: { xs: 'none', sm: 'inline-flex' } }}>
             CLI
           </Button>
           {loading ? (
