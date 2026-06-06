@@ -18,6 +18,7 @@ export interface RoastFormProps {
 export default function RoastForm({ sessionRoastCount, userId = null, onRoastComplete, gated = false, onSignIn }: RoastFormProps) {
   const [prompt, setPrompt] = useState('');
   const [error, setError] = useState('');
+  const [streamError, setStreamError] = useState('');
   const [loading, setLoading] = useState(false);
   const [streamedText, setStreamedText] = useState('');
   const [result, setResult] = useState<RoastResult | null>(null);
@@ -28,6 +29,7 @@ export default function RoastForm({ sessionRoastCount, userId = null, onRoastCom
       return;
     }
     setError('');
+    setStreamError('');
     setLoading(true);
     setStreamedText('');
     setResult(null);
@@ -61,7 +63,7 @@ export default function RoastForm({ sessionRoastCount, userId = null, onRoastCom
         }
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong.');
+      setStreamError(err instanceof Error ? err.message : 'Something went wrong. Try again.');
     } finally {
       setLoading(false);
     }
@@ -129,6 +131,28 @@ export default function RoastForm({ sessionRoastCount, userId = null, onRoastCom
         >
           {loading ? 'Roasting...' : 'Light it up'}
         </Button>
+      )}
+
+      {streamError && (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 2,
+            p: 2,
+            border: '1px solid',
+            borderColor: 'error.main',
+            bgcolor: 'rgba(211, 47, 47, 0.08)',
+          }}
+        >
+          <Typography variant="body2" color="error.light" sx={{ flex: 1 }}>
+            {streamError}
+          </Typography>
+          <Button size="small" variant="outlined" color="error" onClick={handleSubmit}>
+            Try again
+          </Button>
+        </Box>
       )}
 
       {(streamedText || result) && (

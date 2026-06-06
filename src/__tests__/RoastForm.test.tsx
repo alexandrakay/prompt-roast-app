@@ -58,4 +58,52 @@ describe('RoastForm', () => {
     expect(screen.getByRole('textbox')).not.toBeDisabled();
     expect(screen.queryByText(/sign in/i)).not.toBeInTheDocument();
   });
+
+  describe('stream error handling', () => {
+    it('shows an error message when the roast action rejects', async () => {
+      const { roastPrompt } = jest.requireMock('../app/actions');
+      roastPrompt.mockRejectedValueOnce(new Error('Network error'));
+
+      render(<RoastForm sessionRoastCount={0} onRoastComplete={() => {}} />);
+      await userEvent.type(screen.getByRole('textbox'), 'my prompt');
+      await userEvent.click(screen.getByRole('button', { name: /light it up/i }));
+
+      expect(await screen.findByText(/network error/i)).toBeInTheDocument();
+    });
+
+    it('shows a retry button after a stream error', async () => {
+      const { roastPrompt } = jest.requireMock('../app/actions');
+      roastPrompt.mockRejectedValueOnce(new Error('Network error'));
+
+      render(<RoastForm sessionRoastCount={0} onRoastComplete={() => {}} />);
+      await userEvent.type(screen.getByRole('textbox'), 'my prompt');
+      await userEvent.click(screen.getByRole('button', { name: /light it up/i }));
+
+      expect(await screen.findByRole('button', { name: /try again/i })).toBeInTheDocument();
+    });
+
+    it('re-enables the submit button after a stream error', async () => {
+      const { roastPrompt } = jest.requireMock('../app/actions');
+      roastPrompt.mockRejectedValueOnce(new Error('Network error'));
+
+      render(<RoastForm sessionRoastCount={0} onRoastComplete={() => {}} />);
+      await userEvent.type(screen.getByRole('textbox'), 'my prompt');
+      await userEvent.click(screen.getByRole('button', { name: /light it up/i }));
+
+      await screen.findByText(/network error/i);
+      expect(screen.getByRole('button', { name: /light it up/i })).not.toBeDisabled();
+    });
+
+    it('preserves the original prompt after a stream error', async () => {
+      const { roastPrompt } = jest.requireMock('../app/actions');
+      roastPrompt.mockRejectedValueOnce(new Error('Network error'));
+
+      render(<RoastForm sessionRoastCount={0} onRoastComplete={() => {}} />);
+      await userEvent.type(screen.getByRole('textbox'), 'my original prompt');
+      await userEvent.click(screen.getByRole('button', { name: /light it up/i }));
+
+      await screen.findByText(/network error/i);
+      expect(screen.getByRole('textbox')).toHaveValue('my original prompt');
+    });
+  });
 });
